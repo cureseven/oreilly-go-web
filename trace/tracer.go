@@ -14,7 +14,11 @@ func New(w io.Writer) Tracer { // 大文字なので公開
 	return &tracer{out: w} // Newするだけで隠された下の実装実行する
 }
 
-// ここからinterfaceの実装
+func OFF() Tracer {
+	return &nilTracer{}
+}
+
+// ここからinterfaceの実装（tracer）
 type tracer struct { // 小文字なので非公開
 	out io.Writer
 }
@@ -23,3 +27,8 @@ func (t *tracer) Trace(a ...interface{}) {
 	t.out.Write([]byte(fmt.Sprint(a...)))
 	t.out.Write([]byte("\n"))
 }
+
+// ここからinterfaceの実装（nilTracer）
+type nilTracer struct{} // 何も持たない
+
+func (t *nilTracer) Trace(a ...interface{}) {}

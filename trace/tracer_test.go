@@ -17,3 +17,8 @@ func TestMew(t *testing.T) {
 		}
 	}
 }
+
+func testOff(t *testing.T) {
+	var silentTracer Tracer = OFF()
+	silentTracer.Trace("データ")
+}
