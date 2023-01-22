@@ -1,2 +1,4 @@
+github.com/cureseven/oreilly-go-web/trace v0.0.0-20230122070712-7c233018662c h1:7ttMlNFT17otnn749+T9XERa+V9zMzDkvO704lsNZ80=
+github.com/cureseven/oreilly-go-web/trace v0.0.0-20230122070712-7c233018662c/go.mod h1:zv19HGX0qJvfWWFEROGcWraHtnU94F3pt8jHdm0kJKs=
 github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
 github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=

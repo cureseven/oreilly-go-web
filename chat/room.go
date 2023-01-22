@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/cureseven/oreilly-go-web/trace"
 	"github.com/gorilla/websocket"
 )
 
@@ -17,6 +18,8 @@ type room struct {
 	// 在室しているすべてのクライアント
 	// 入退室を繰り返したとき無駄にメモリを使わないためにスライスにしてない
 	clients map[*client]bool
+	// ログ受け取り
+	tracer trace.Tracer
 }
 
 func newRoom() *room {
@@ -33,16 +36,23 @@ func (r *room) run() {
 		select { // switch的な
 		case client := <-r.join:
 			r.clients[client] = true
+			r.tracer.Trace("新しいクライアントが参加しました")
 		case client := <-r.leave:
 			delete(r.clients, client)
 			close(client.send)
+			r.tracer.Trace("クライアントが退室しました")
 		case msg := <-r.forward:
+			r.tracer.Trace("メッセージを受信しました: ", string(msg))
+			// すべてのクライアントにメッセージを転送
 			for client := range r.clients {
 				select {
 				case client.send <- msg:
+					// メッセージを送信
+					r.tracer.Trace(" -- クライアントに送信されました")
 				default:
 					delete(r.clients, client)
 					close(client.send)
+					r.tracer.Trace(" -- 送信に失敗しました。クライアントをクリーンアップします")
 				}
 			}
 		}
